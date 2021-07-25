@@ -14,7 +14,7 @@ User's Manual:
 
 #### To set up the application on the local server you need. The first will install all project dependencies by running the command in bash ```pip install -r requirements.txt```. Second, you need to run seed.py file in bash ```python seed.py```.
 
-### Technology used in this project
+### Technology used in this project:
 - Python
 - Flask
 - JavaScript
