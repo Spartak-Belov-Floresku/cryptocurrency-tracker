@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block page_name %}Home{% endblock %}
+{% block body %}
+<div class="main-coins-body">
+    <h2>Your coins:</h2>
+<div id="user_coins_to_track">
+{% for coin in user_coins_obj %}
+    <div class="container mt-5 d-flex justify-content-center coin-div" id="{{ coin['coin_symbol'] }}">
+        <span class="remove-coin btn-close" data-symbol-remove="{{ coin['coin_symbol'] }}"></span>
+        <div class="card p-3">
+            <div class="d-flex align-items-center">
+                <div class="image"><a href="{{ coin['coin_explorer'] }}"><img src="{{ coin['coin_img'] }}" class="rounded"></a> </div>
+                <div class="ml-3 name_symbol">
+                    <h4 class="mb-0 mt-0">{{ coin['coin_symbol'] }} </h4> <span>{{ coin['coin_name'] }}</span>
+                </div>
+                <div class="data-info">
+                    <div class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
+                        <div class="d-flex flex-column"> <span class="articles">Price</span> <span class="number1" id="price_{{coin['coin_symbol']}}">{{ coin['coin_price'] }}</span></div>
+                        <div class="d-flex flex-column"> <span class="followers">24 hours</span> 
+                            {% if '-' in coin['coin_change_price'] %}
+                                <span class="number2 coin_change_price_red" id="coin_change_price_{{coin['coin_symbol']}}">
+                            {% else %}
+                                <span class="number2 coin_change_price_green" id="coin_change_price_{{coin['coin_symbol']}}">
+                            {% endif %}
+                            {{ coin['coin_change_price'] }}</span></div>
+
+
+                        <div class="d-flex flex-column"> <span class="rating">Rank</span> <span class="number3">{{ coin['rank'] }}</span> </div>
+                    </div>   
+                </div>
+            </div>
+        </div>
+        {% if g.user.email[0] or g.user.phone[0]%}
+                <div class="tracking_forms">
+                    <h4>Tracking options by:</h4>
+                    <form class="track_options">
+                        <input type="hidden" name="coin_symbol" value="{{ coin['coin_symbol'] }}">
+                        {% if coin['track_input'] %}
+                            <input type="hidden" name="stop_tracking" value="on">
+                        {% endif %}
+                        {% if g.user.email[0] %}
+                            {% if g.user.email[0].verified %}
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="by_email" name="by_email" {% if coin['track_email'] == 'on' %}checked{% endif %} {% if coin['track_input'] %}disabled{% endif %}>
+                                    <label class="form-check-label" for="by_email"><b>{{ g.user.email[0].email }}</b></label>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        {% if g.user.phone[0] %}
+                            {% if g.user.phone[0].verified %}
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="by_phone" name="by_phone" {% if coin['track_phone'] == 'on' %}checked{% endif %} {% if coin['track_input'] %}disabled{% endif %}>
+                                    <label class="form-check-label" for="by_phone"><b>{{ g.user.phone[0].number }}</b></label>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" step="0.01" name="user_rate" aria-label="Amount (to the nearest dollar)" required value="{{coin['track_rate']}}" {% if coin['track_input'] %}disabled{% endif %}>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="goes" id="up" value="up" {% if coin['track_goes'] == 'up' %}checked{% endif %} {% if coin['track_input'] %}disabled{% endif %}>
+                            <label class="form-check-label" for="up">Up</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="goes" id="down" value="down" {% if coin['track_goes'] == 'down' %}checked{% endif %} {% if coin['track_input'] %}disabled{% endif %}>
+                            <label class="form-check-label" for="down">Down</label>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <input type="submit" class="btn btn-primary tracking_btn {% if coin['track_input'] %}deactivated{% endif %}" value="Start tracking">
+                            <input type="submit" class="btn btn-primary tracking_btn {% if not coin['track_input'] %}deactivated{% endif %}" value="Stop tracking">
+                        </div>
+                    </form>
+                </div>
+        {% endif %}
+    </div>
+{% endfor %}
+</div>
+        <h2 class="more_coins">More coins:</h2>
+        <div id="more_coins_to_add">
+        {% for coin_a in coins_data_obj %}
+            <div class="text-center add_user_coin {{ coin_a['coin_symbol'] }}">
+                <div data-symbol-add="{{ coin_a['coin_symbol'] }}" class="add-coin-to-user">
+                    <img src="{{ coin_a['coin_img'] }}" class="rounded" alt="{{ coin_a['coin_symbol'] }}">
+                    <p>{{ coin_a['coin_symbol'] }}</p>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+</div>
+{% endblock %}
