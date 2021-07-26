@@ -437,17 +437,19 @@ class UserSession:
         db.session.commit()
 
         #checking if user has activated email or phone number
-        user_email = False
+        user_email = {'status': False, 'email': False}
 
         if user.email:
+            user_email['status'] = True
             if user.email[0].verified:
-                user_email = user.email[0].email
+                user_email['email'] = user.email[0].email
 
-        user_phone = False
+        user_phone = {'status':False, 'phone': False}
 
         if user.phone:
+            user_phone['status'] = True
             if user.phone[0].verified:
-                user_phone = user.phone[0].number
+                user_phone['phone'] = user.phone[0].number
 
 
         user_coins, coins_list = self.get_coins_details(user.id)
@@ -479,13 +481,13 @@ class UserSession:
             form += f'<span class="number2 coin_change_price_green" id="coin_change_price_{user_coin["coin_symbol"]}">'
         form += f'{user_coin["coin_change_price"]}</span></div>'
         form += f'<div class="d-flex flex-column"> <span class="rating">Rank</span> <span class="number3">{user_coin["rank"]}</span></div></div></div></div></div>'
-        if user_email or user_phone:
+        if user_email['status'] or user_phone['status']:
             form += '<div class="tracking_forms"><h4>Tracking options by:</h4><form class="track_options">'
             form += f'<input type="hidden" name="coin_symbol" value="{user_coin["coin_symbol"]}">'
-            if user_email:
-                form += f'<div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="by_email" name="by_email"><label class="form-check-label" for="by_email"><b>{user_email}</b></label></div>'
-            if user_phone:
-                form += f'<div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="by_phone" name="by_phone"><label class="form-check-label" for="by_phone"><b>{user_phone}</b></label></div>'
+            if user_email["email"]:
+                form += f'<div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="by_email" name="by_email"><label class="form-check-label" for="by_email"><b>{user_email["email"]}</b></label></div>'
+            if user_phone["phone"]:
+                form += f'<div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="by_phone" name="by_phone"><label class="form-check-label" for="by_phone"><b>{user_phone["phone"]}</b></label></div>'
             form += '<div class="input-group mb-3"><span class="input-group-text">$</span><input type="number" class="form-control" name="user_rate" aria-label="Amount (to the nearest dollar)" required></div>'
             form += '<div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="goes" id="up" value="up"><label class="form-check-label" for="up">Up</label></div>'
             form += '<div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="goes" id="down" value="down"><label class="form-check-label" for="down">Down</label></div>'
