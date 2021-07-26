@@ -49,7 +49,7 @@ job_defaults = {
     'max_instances': 3
 }
 
-#setup jod to run method running_tracking_server every 30 seconds
+#setup jod to run method running_tracking_server every 60 seconds
 @app.before_first_request
 def before_first_request():
     scheduler = BackgroundScheduler(job_defaults=job_defaults)
