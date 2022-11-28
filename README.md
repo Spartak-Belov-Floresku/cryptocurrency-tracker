@@ -9,8 +9,6 @@
 - The user just needs to confirm the email address or (and) phone number to track the cryptocurrency rates live. 
 - And the application will send a notification to the user's email or(and) phone number that the cryptocurrency rate(s) meets the user's expectations.
 
-###  Working test version of the application [Cryptocurrency Tracker](https://cryptocurrency-track.herokuapp.com)
-
 #### To set up the application on the local server you need. 
 - The first will install all project dependencies by running the command in bash ```pip install -r requirements.txt```. 
 - Second, you need to run seed.py file in bash ```python seed.py```.
